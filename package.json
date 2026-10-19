@@ -12,7 +12,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && prisma db seed && next build",
     "images:placeholders": "node scripts/generate-placeholders.mjs",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate"

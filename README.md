@@ -145,12 +145,12 @@ npm run dev                   # http://localhost:3000
    - `AUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CRON_SECRET`
    - `QPAY_MODE=sandbox` болон бусад `QPAY_*`
    - `SMTP_*`, `ORDER_NOTIFY_EMAIL`
-6. **Build command:** `package.json` дахь `vercel-build` script-ийг Vercel автоматаар ашиглана. Энэ нь `prisma generate && prisma migrate deploy && next build` ажиллуулж, deploy бүрт migration-ыг хэрэгжүүлнэ.
+6. **Build command:** `package.json` дахь `vercel-build` script-ийг Vercel автоматаар ашиглана. Энэ нь deploy бүрт `prisma generate && prisma migrate deploy && prisma db seed && next build` ажиллуулна:
+   - Migration-ыг хэрэгжүүлнэ.
+   - Анхны бараа, ангилал, баннерыг оруулна. Seed нь одоо байгаа барааг дарж бичихгүй, баннер байхгүй үед л нэмнэ.
+   - Админы нууц үгийг `ADMIN_PASSWORD`-аар шинэчилнэ.
 7. **Deploy** дарна.
-8. **Seed (нэг удаа):** компьютер дээрээ production `DATABASE_URL`-аар ажиллуулна:
-   ```bash
-   DATABASE_URL="<production-url>" ADMIN_EMAIL="..." ADMIN_PASSWORD="..." npm run db:seed
-   ```
+8. (Нэмэлт) Seed-ийг гараар ажиллуулах бол: `DATABASE_URL="<production-url>" npm run db:seed`
 9. `https://<домэйн>/admin` руу нэвтэрч, **Тохиргоо** хэсэгт дансны мэдээлэл, хүргэлтийн үнийг оруулна. **Бараа** хэсэгт placeholder зургийг жинхэнэ зургаар солино.
 10. **Cron:** `vercel.json` дотор `/api/cron/expire-orders` өдөр бүр 20:00 UTC-д (УБ 04:00) ажиллахаар тохируулсан. Vercel нь `CRON_SECRET`-ийг автоматаар `Authorization` header-т илгээнэ.
 
