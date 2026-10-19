@@ -1,0 +1,12 @@
+# Netlify тохиргоо. Next.js-ийн runtime-ийг Netlify автоматаар таньж суулгана.
+[build]
+  command = "npm run netlify-build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Netlify Blobs-оор зураг хадгална
+  STORAGE_DRIVER = "netlify"
+
+[functions]
+  node_bundler = "esbuild"

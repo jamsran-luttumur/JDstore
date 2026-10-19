@@ -154,6 +154,38 @@ npm run dev                   # http://localhost:3000
 9. `https://<домэйн>/admin` руу нэвтэрч, **Тохиргоо** хэсэгт дансны мэдээлэл, хүргэлтийн үнийг оруулна. **Бараа** хэсэгт placeholder зургийг жинхэнэ зургаар солино.
 10. **Cron:** `vercel.json` дотор `/api/cron/expire-orders` өдөр бүр 20:00 UTC-д (УБ 04:00) ажиллахаар тохируулсан. Vercel нь `CRON_SECRET`-ийг автоматаар `Authorization` header-т илгээнэ.
 
+## 4б. Netlify дээр байршуулах (Vercel-ийн оронд)
+
+Netlify-д зориулсан тохиргоо бэлэн байгаа:
+- `netlify.toml`: build команд, Node 22.
+- Зургийг автоматаар **Netlify Blobs**-д хадгална.
+- `netlify/functions/expire-orders.mts`: өдөр бүрийн cron.
+- Сайтын хаягийг Netlify-ийн `URL` хувьсагчаас автоматаар авна.
+
+1. **Өгөгдлийн сан (Neon):**
+   - [neon.tech](https://neon.tech) → **Sign up with GitHub**.
+   - **Create project**: Postgres 16, Region **AWS Asia Pacific (Singapore)**.
+   - **Connection string**-ийг хуулна (`postgresql://...neon.tech/neondb?sslmode=require`).
+2. **Netlify:** [app.netlify.com](https://app.netlify.com) → **Sign up with GitHub** → **Add new site → Import an existing project → GitHub** → `JDstore` repo → branch `main`.
+3. Build тохиргоог `netlify.toml`-оос автоматаар уншина, юу ч өөрчлөх хэрэггүй.
+4. **Environment variables** (Add environment variables / Site configuration → Environment variables):
+
+   | Нэр | Утга |
+   |---|---|
+   | `DATABASE_URL` | Neon-ы connection string |
+   | `AUTH_SECRET` | 32+ тэмдэгт санамсаргүй мөр |
+   | `CRON_SECRET` | санамсаргүй мөр |
+   | `ADMIN_EMAIL` | админы и-мэйл |
+   | `ADMIN_PASSWORD` | админы нууц үг (10+ тэмдэгт) |
+   | `STORAGE_DRIVER` | `netlify` |
+   | `QPAY_ENABLED` | `false` (гэрээ хийгдэх хүртэл) |
+   | `QPAY_MODE` | `sandbox` |
+   | `ORDER_NOTIFY_EMAIL` | мэдэгдэл авах и-мэйл |
+
+5. **Deploy** дарна. Build нь migration, seed болон Next.js build-ийг автоматаар ажиллуулна.
+6. Сайт `https://<нэр>.netlify.app` хаягаар нээгдэнэ. Нэрийг **Site configuration → Change site name** хэсгээс сольж болно.
+7. **Домэйн:** **Domain management → Add a domain** → `jdstore.mn`. DNS-ээ Netlify-ийн зааврын дагуу тохируулна (A бичлэг эсвэл Netlify DNS). Домэйн холбосны дараа `NEXT_PUBLIC_SITE_URL=https://jdstore.mn` нэмж дахин deploy хийнэ.
+
 ## 5. Railway дээр байршуулах (сонголт)
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**.

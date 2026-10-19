@@ -1,6 +1,7 @@
 import "server-only";
 import nodemailer from "nodemailer";
 import { formatDateTime, formatMNT } from "./format";
+import { SITE_URL } from "./site";
 import { PAYMENT_METHOD_LABEL } from "./constants";
 import type { Order, OrderItem } from "@prisma/client";
 
@@ -41,7 +42,7 @@ function addressLine(o: Pick<Order, "district" | "khoroo" | "address">) {
 }
 
 export async function sendNewOrderEmail(order: Order & { items: OrderItem[] }, to: string) {
-  const site = process.env.NEXT_PUBLIC_SITE_URL || "";
+  const site = SITE_URL;
   const rows = order.items
     .map(
       (i) =>

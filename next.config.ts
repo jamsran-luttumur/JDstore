@@ -20,7 +20,7 @@ const securityHeaders = [
       // Next.js-ийн inline hydration скриптэд 'unsafe-inline' шаардлагатай (nonce-гүй үед)
       `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
       "connect-src 'self'",
-      ...((process.env.NEXT_PUBLIC_SITE_URL || "").startsWith("https://") ? ["upgrade-insecure-requests"] : []),
+      ...((process.env.NEXT_PUBLIC_SITE_URL || process.env.URL || "").startsWith("https://") ? ["upgrade-insecure-requests"] : []),
     ].join("; "),
   },
 ];

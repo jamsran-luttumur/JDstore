@@ -5,6 +5,7 @@ import { buildQuote, normalizeItems } from "./pricing";
 import { getSettings } from "./settings";
 import { randomDigits, randomToken } from "./tokens";
 import { ubDateStamp } from "./format";
+import { SITE_URL } from "./site";
 import { cancelInvoice, checkInvoice, createInvoice } from "./qpay";
 import type { CheckoutInput } from "./validation";
 
@@ -166,12 +167,11 @@ export async function getOrCreateQPayInvoice(orderId: string) {
 
       const prev = await tx.payment.count({ where: { orderId } });
       const callbackToken = randomToken(24);
-      const site = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
       const inv = await createInvoice({
         senderInvoiceNo: prev === 0 ? order.orderNumber : `${order.orderNumber}-${prev + 1}`,
         amount: order.total,
         description: `JDstore захиалга ${order.orderNumber}`,
-        callbackUrl: `${site}/api/qpay/callback?token=${callbackToken}`,
+        callbackUrl: `${SITE_URL}/api/qpay/callback?token=${callbackToken}`,
         receiverPhone: order.phone,
       });
       if (existing) await tx.payment.update({ where: { id: existing.id }, data: { status: "CANCELLED" } });

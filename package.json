@@ -15,9 +15,11 @@
     "vercel-build": "prisma generate && prisma migrate deploy && prisma db seed && next build",
     "images:placeholders": "node scripts/generate-placeholders.mjs",
     "test:e2e": "playwright test",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "netlify-build": "prisma generate && prisma migrate deploy && prisma db seed && next build"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.4",
     "@prisma/client": "^6.19.3",
     "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",

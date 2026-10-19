@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Netlify/AWS Lambda-гийн Linux-д зориулсан engine-ийг мөн үүсгэнэ
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
